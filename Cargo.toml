@@ -1,0 +1,26 @@
+[package]
+name = "fft-benchmark"
+version = "0.0.0"
+authors = ["astral4"]
+edition = "2021"
+description = "Benchmark of Fast Fourier transform libraries for Rust"
+readme = "README.md"
+repository = "https://github.com/astral4/fft-benchmark"
+license = "MIT"
+
+[dev-dependencies]
+divan = "0.1.13"
+phastft = "0.1.1"
+rand = "0.8.5"
+rustfft = "6.2.0"
+
+[[bench]]
+name = "forward"
+harness = false
+
+[[bench]]
+name = "inverse"
+harness = false
+
+# PhastFT lacks runtime CPU feature detection, so optimal performance requires compiling with -C target-cpu=native
+build.rustflags = "-C target-cpu=native"
