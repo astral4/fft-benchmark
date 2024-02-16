@@ -28,3 +28,9 @@ All measurements were taken on an M1 MacBook Pro with `rustc 1.78.0-nightly (8ac
 |     1048576     |     18.05 ms / 19.32 ms     |   **17.31 ms / 17.11 ms**   | 50.33 MB / 50.33 MB | **16.77 MB / 33.55 MB** |
 |     2097152     |   **36.63 ms** / 40.81 ms   |   40.53 ms / **40.3 ms**    | 100.6 MB / 100.6 MB | **33.55 MB / 67.1 MB**  |
 |     4194304     |     81.86 ms / 81.79 ms     | **70.52 ms** / **71.86 ms** | 201.3 MB / 201.3 MB | **67.1 MB / 134.2 MB**  |
+
+## Conclusion
+
+For the tested sequence lengths, `phastft` consistently outperformed `rustfft` in terms of memory usage and time taken.
+
+However, `phastft` cannot calculate Fourier transforms for sequences with lengths that are not a power of 2. Instead, the library [panics](https://github.com/QuState/PhastFT/blob/a8d948561152d8dce760383b463d3b59cf897f0b/src/lib.rs#L68). If this doesn't apply to your use case, `phastft` is a good choice.
