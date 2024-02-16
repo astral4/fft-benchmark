@@ -49,3 +49,18 @@ fn forward(bencher: Bencher<'_, '_>, len: usize) {
             black_box(nums);
         });
 }
+
+#[divan::bench(args = LENGTHS)]
+fn inverse(bencher: Bencher<'_, '_>, len: usize) {
+    bencher
+        .with_inputs(|| {
+            let planner = FftPlanner::new();
+            let nums = generate_numbers(len);
+            (planner, nums)
+        })
+        .counter(len)
+        .bench_values(|(mut planner, mut nums)| {
+            planner.plan_fft_inverse(nums.len()).process(&mut nums);
+            black_box(nums);
+        });
+}
