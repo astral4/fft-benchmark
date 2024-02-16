@@ -12,14 +12,15 @@ license = "MIT"
 divan = "0.1.13"
 phastft = "0.1.1"
 rand = "0.8.5"
+rand_xoshiro = "0.6.0"
 rustfft = "6.2.0"
 
 [[bench]]
-name = "forward"
+name = "phastft"
 harness = false
 
 [[bench]]
-name = "inverse"
+name = "rustfft"
 harness = false
 
 # PhastFT lacks runtime CPU feature detection, so optimal performance requires compiling with -C target-cpu=native
