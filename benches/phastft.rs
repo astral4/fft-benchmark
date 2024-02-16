@@ -43,3 +43,14 @@ fn forward(bencher: Bencher<'_, '_>, len: usize) {
             black_box((reals, imags));
         });
 }
+
+#[divan::bench(args = LENGTHS)]
+fn inverse(bencher: Bencher<'_, '_>, len: usize) {
+    bencher
+        .with_inputs(|| generate_numbers(len))
+        .counter(len)
+        .bench_values(|(mut reals, mut imags)| {
+            phastft::fft(&mut reals, &mut imags, Direction::Reverse);
+            black_box((reals, imags));
+        });
+}
