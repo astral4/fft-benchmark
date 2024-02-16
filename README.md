@@ -1,6 +1,6 @@
 # fft-benchmark
 
-This benchmark compares the performance of two Fast Fourier transform libraries for Rust: [`rustfft`](https://crates.io/crates/rustfft) and [`phastft`](https://crates.io/crates/phastft).
+This benchmark compares the performance of two fast Fourier transform libraries for Rust: [`rustfft`](https://crates.io/crates/rustfft) and [`phastft`](https://crates.io/crates/phastft).
 
 ## Results
 
