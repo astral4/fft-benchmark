@@ -1,4 +1,4 @@
-use divan::{black_box, AllocProfiler, Bencher};
+use divan::{AllocProfiler, Bencher};
 use fft_benchmark::{Float, LENGTHS, SEED};
 use rand::{Rng, SeedableRng};
 use rand_xoshiro::Xoshiro256Plus;
@@ -33,10 +33,7 @@ fn forward(bencher: Bencher<'_, '_>, len: usize) {
             (planner, nums)
         })
         .counter(len)
-        .bench_refs(|(planner, nums)| {
-            planner.plan_fft_forward(nums.len()).process(nums);
-            black_box(nums);
-        });
+        .bench_refs(|(planner, nums)| planner.plan_fft_forward(nums.len()).process(nums));
 }
 
 #[divan::bench(args = LENGTHS)]
@@ -48,8 +45,5 @@ fn inverse(bencher: Bencher<'_, '_>, len: usize) {
             (planner, nums)
         })
         .counter(len)
-        .bench_refs(|(planner, nums)| {
-            planner.plan_fft_inverse(nums.len()).process(nums);
-            black_box(nums);
-        });
+        .bench_refs(|(planner, nums)| planner.plan_fft_inverse(nums.len()).process(nums));
 }
