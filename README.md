@@ -33,4 +33,4 @@ All measurements were taken on an M1 MacBook Pro with `rustc 1.78.0-nightly (8ac
 
 For the tested sequence lengths, `phastft` consistently outperformed `rustfft` in terms of memory usage and time taken.
 
-However, `phastft` cannot calculate Fourier transforms for sequences with lengths that are not a power of 2. Instead, the library [panics](https://github.com/QuState/PhastFT/blob/a8d948561152d8dce760383b463d3b59cf897f0b/src/lib.rs#L68). If this doesn't apply to your use case, `phastft` is a good choice.
+However, `phastft` cannot calculate Fourier transforms for sequences with lengths that are not a power of 2. Instead, the library [panics](https://github.com/QuState/PhastFT/blob/a8d948561152d8dce760383b463d3b59cf897f0b/src/lib.rs#L68). Also, `phastft` only supports `f64` for computing Fourier transforms, while `rustfft` supports both `f32` and `f64`. If these caveats don't matter for your use case, `phastft` is an excellent choice.
