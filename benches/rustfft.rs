@@ -33,8 +33,8 @@ fn forward(bencher: Bencher<'_, '_>, len: usize) {
             (planner, nums)
         })
         .counter(len)
-        .bench_values(|(mut planner, mut nums)| {
-            planner.plan_fft_forward(nums.len()).process(&mut nums);
+        .bench_refs(|(planner, nums)| {
+            planner.plan_fft_forward(nums.len()).process(nums);
             black_box(nums);
         });
 }
@@ -48,8 +48,8 @@ fn inverse(bencher: Bencher<'_, '_>, len: usize) {
             (planner, nums)
         })
         .counter(len)
-        .bench_values(|(mut planner, mut nums)| {
-            planner.plan_fft_inverse(nums.len()).process(&mut nums);
+        .bench_refs(|(planner, nums)| {
+            planner.plan_fft_inverse(nums.len()).process(nums);
             black_box(nums);
         });
 }

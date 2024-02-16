@@ -30,8 +30,8 @@ fn forward(bencher: Bencher<'_, '_>, len: usize) {
     bencher
         .with_inputs(|| generate_numbers(len))
         .counter(len)
-        .bench_values(|(mut reals, mut imags)| {
-            phastft::fft(&mut reals, &mut imags, Direction::Forward);
+        .bench_refs(|(reals, imags)| {
+            phastft::fft(reals, imags, Direction::Forward);
             black_box((reals, imags));
         });
 }
@@ -41,8 +41,8 @@ fn inverse(bencher: Bencher<'_, '_>, len: usize) {
     bencher
         .with_inputs(|| generate_numbers(len))
         .counter(len)
-        .bench_values(|(mut reals, mut imags)| {
-            phastft::fft(&mut reals, &mut imags, Direction::Reverse);
+        .bench_refs(|(reals, imags)| {
+            phastft::fft(reals, imags, Direction::Reverse);
             black_box((reals, imags));
         });
 }
