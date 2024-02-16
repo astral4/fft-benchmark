@@ -1,0 +1,3 @@
+# PhastFT lacks runtime CPU feature detection, so optimal performance requires compiling with -C target-cpu=native
+[build]
+rustflags = "-C target-cpu=native"
