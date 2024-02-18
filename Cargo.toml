@@ -10,10 +10,15 @@ license = "MIT"
 
 [dev-dependencies]
 divan = "0.1.13"
+fftw = "0.8.0"
 phastft = "0.1.1"
 rand = "0.8.5"
 rand_xoshiro = "0.6.0"
 rustfft = "6.2.0"
+
+[[bench]]
+name = "fftw"
+harness = false
 
 [[bench]]
 name = "phastft"
