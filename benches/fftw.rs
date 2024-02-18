@@ -33,6 +33,11 @@ fn forward(bencher: Bencher<'_, '_>, len: usize) {
             C2CPlan64::aligned(&[len], Sign::Forward, Flag::DESTROYINPUT | Flag::ESTIMATE)
                 .unwrap()
                 .c2c(
+                    // SAFETY: This is *probably* fine. The FFT needs to be computed in-place to match the behavior
+                    // of other libraries included in the benchmark. To do this, we need to have two mutable borrows
+                    // of the same slice when calling `fftw::plan::C2CPlan::c2c()`. This seems to be fine
+                    // since there is existing C code using FFTW that does this; see
+                    // https://github.com/QuState/PhastFT/blob/77e74fb8db0f83e57026727dd5b6b5fb287ef802/benches/main.c#L84.
                     unsafe { &mut *slice_from_raw_parts_mut(nums.as_mut_ptr(), len) },
                     nums,
                 )
@@ -49,6 +54,7 @@ fn inverse(bencher: Bencher<'_, '_>, len: usize) {
             C2CPlan64::aligned(&[len], Sign::Backward, Flag::DESTROYINPUT | Flag::ESTIMATE)
                 .unwrap()
                 .c2c(
+                    // SAFETY: See above comment.
                     unsafe { &mut *slice_from_raw_parts_mut(nums.as_mut_ptr(), len) },
                     nums,
                 )
