@@ -1,6 +1,9 @@
 use divan::{AllocProfiler, Bencher};
 use fft_benchmark::{Float, LENGTHS, SEED};
-use phastft::planner::Direction;
+use phastft::{
+    options::Options,
+    planner::{Direction, Planner},
+};
 use rand::{Rng, SeedableRng};
 use rand_xoshiro::Xoshiro256Plus;
 
@@ -28,15 +31,37 @@ fn generate_numbers(count: usize) -> (Vec<Float>, Vec<Float>) {
 #[divan::bench(args = LENGTHS)]
 fn forward(bencher: Bencher<'_, '_>, len: usize) {
     bencher
-        .with_inputs(|| generate_numbers(len))
+        .with_inputs(|| {
+            let options = Options::default();
+            let nums = generate_numbers(len);
+            (options, nums)
+        })
         .counter(len)
-        .bench_refs(|(reals, imags)| phastft::fft(reals, imags, Direction::Forward));
+        .bench_refs(|(options, (reals, imags))| {
+            phastft::fft_with_opts_and_plan(
+                reals,
+                imags,
+                options,
+                &mut Planner::new(len, Direction::Forward),
+            )
+        });
 }
 
 #[divan::bench(args = LENGTHS)]
 fn inverse(bencher: Bencher<'_, '_>, len: usize) {
     bencher
-        .with_inputs(|| generate_numbers(len))
+        .with_inputs(|| {
+            let options = Options::default();
+            let nums = generate_numbers(len);
+            (options, nums)
+        })
         .counter(len)
-        .bench_refs(|(reals, imags)| phastft::fft(reals, imags, Direction::Reverse));
+        .bench_refs(|(options, (reals, imags))| {
+            phastft::fft_with_opts_and_plan(
+                reals,
+                imags,
+                options,
+                &mut Planner::new(len, Direction::Reverse),
+            )
+        });
 }
