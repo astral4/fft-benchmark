@@ -43,11 +43,11 @@ All measurements were taken on an M1 MacBook Pro with `rustc 1.78.0-nightly (667
 
 ## Conclusion
 
-`rustfft` was the fastest for the smallest and largest sequence lengths tested. However, `phastft` allocated *significantly* less memory than `rustfft`. `fftw` was consistently slower than both `rustfft` and `phastft`.
+`rustfft` was the fastest for the smallest and largest sequence lengths tested, and `phastft` was the fastest in all other cases. `phastft` allocated *significantly* less memory than `rustfft`. `fftw` was consistently slower than both `rustfft` and `phastft`.
 
 `phastft` currently has several limitations:
 - requires nightly Rust due to usage of [portable SIMD](https://doc.rust-lang.org/1.76.0/std/simd/index.html)
 - does not support computing Fourier transforms for sequences with lengths that are not a power of 2; a workaround for this is to pad the sequence as necessary
-- does not support `f32` for computing Fourier transforms, unlike `rustfft` which supports both `f32` and `f64`
+- does not support `f32` for computing Fourier transforms, unlike `fftw` and `rustfft` which support both `f32` and `f64`
 
 If these don't matter for your use case, `phastft` is an excellent choice.
