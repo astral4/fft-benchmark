@@ -43,7 +43,7 @@ All measurements were taken on an M1 MacBook Pro with `rustc 1.78.0-nightly (667
 
 ## Conclusion
 
-`rustfft` was the fastest for the smallest and largest sequence lengths tested, and `phastft` was the fastest in all other cases. `phastft` allocated *significantly* less memory than `rustfft`. `fftw` was consistently slower than both `rustfft` and `phastft`.
+`phastft` was the fastest in most tests, but `rustfft` was the fastest on the smallest and largest sequence lengths tested. `phastft` allocated *significantly* less memory than `rustfft`. `fftw` was consistently slower than both `rustfft` and `phastft`.
 
 `phastft` currently has several limitations:
 - requires nightly Rust due to usage of [portable SIMD](https://doc.rust-lang.org/1.76.0/std/simd/index.html)
