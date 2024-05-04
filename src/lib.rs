@@ -1,6 +1,3 @@
-// PhastFT only supports 64-bit floating point numbers for computing Fourier transforms
-pub type Float = f64;
-
 pub const SEED: u64 = 42;
 
 pub const LENGTHS: [usize; 21] = [
