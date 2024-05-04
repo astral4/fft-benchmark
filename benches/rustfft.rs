@@ -1,9 +1,12 @@
 use divan::{AllocProfiler, Bencher};
-use fft_benchmark::{Float, LENGTHS, SEED};
-use rand::{Rng, SeedableRng};
+use fft_benchmark::{LENGTHS, SEED};
+use rand::{
+    distributions::{Distribution, Standard},
+    Rng, SeedableRng,
+};
 use rand_xoshiro::Xoshiro256Plus;
 use rustfft::num_complex::Complex;
-use rustfft::FftPlanner;
+use rustfft::{FftNum, FftPlanner};
 
 #[global_allocator]
 static ALLOC: AllocProfiler = AllocProfiler::system();
@@ -12,7 +15,10 @@ fn main() {
     divan::main();
 }
 
-fn generate_numbers(count: usize) -> Vec<Complex<Float>> {
+fn generate_numbers<T>(count: usize) -> Vec<Complex<T>>
+where
+    Standard: Distribution<T>,
+{
     let mut rng = Xoshiro256Plus::seed_from_u64(SEED);
 
     let mut nums = Vec::with_capacity(count);
@@ -24,24 +30,32 @@ fn generate_numbers(count: usize) -> Vec<Complex<Float>> {
     nums
 }
 
-#[divan::bench(args = LENGTHS)]
-fn forward(bencher: Bencher<'_, '_>, len: usize) {
+#[divan::bench(types = [f32, f64], args = LENGTHS)]
+fn forward<T>(bencher: Bencher<'_, '_>, len: usize)
+where
+    T: FftNum,
+    Standard: Distribution<T>,
+{
     bencher
         .with_inputs(|| {
             let planner = FftPlanner::new();
-            let nums = generate_numbers(len);
+            let nums = generate_numbers::<T>(len);
             (planner, nums)
         })
         .counter(len)
         .bench_refs(|(planner, nums)| planner.plan_fft_forward(nums.len()).process(nums));
 }
 
-#[divan::bench(args = LENGTHS)]
-fn inverse(bencher: Bencher<'_, '_>, len: usize) {
+#[divan::bench(types = [f32, f64], args = LENGTHS)]
+fn inverse<T>(bencher: Bencher<'_, '_>, len: usize)
+where
+    T: FftNum,
+    Standard: Distribution<T>,
+{
     bencher
         .with_inputs(|| {
             let planner = FftPlanner::new();
-            let nums = generate_numbers(len);
+            let nums = generate_numbers::<T>(len);
             (planner, nums)
         })
         .counter(len)
