@@ -75,6 +75,6 @@ All measurements were taken on an M1 MacBook Pro with `rustc 1.80.0-nightly (d2d
 
 `phastft` currently has a few limitations:
 - requires nightly Rust due to usage of [portable SIMD](https://doc.rust-lang.org/1.76.0/std/simd/index.html)
-- does not support computing Fourier transforms for sequences with lengths that are not a power of 2; a workaround for this is to pad the sequence as necessary
+- does not support computing Fourier transforms for sequences with lengths that are not a power of 2
 
 If these don't matter for your use case, `phastft` is an excellent choice.
